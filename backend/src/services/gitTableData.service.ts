@@ -3,10 +3,20 @@ import { AppDataSource } from "../database/ormconfig";
 import dotenv from "dotenv";
 import { NextFunction } from "express";
 // import { Iuser } from "../interfaceses";
+import axios from "axios";
 
 dotenv.config();
 
 const gitDataRepository = AppDataSource.getRepository(git_cd_repo);
+
+
+interface Idatas {
+  name: string;
+  node_id: string;
+  full_name: string;
+  html_url: string;
+  description: string | null;
+}
 
 
 //view all users
@@ -59,3 +69,5 @@ export const deleting = async (id: string) => {
   const currentUser = await gitDataRepository.delete({ id: ID });
   return currentUser;
 };
+
+

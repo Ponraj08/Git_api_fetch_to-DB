@@ -1,4 +1,4 @@
-import { git } from "../entities/entities";
+import { git_cd_repo } from "../entities/entities";
 import { AppDataSource } from "../ormconfig";
 import axios from "axios";
 import * as dotenv from "dotenv";
@@ -15,93 +15,67 @@ interface Idatas {
   description: string | null;
 }
 
-const Code = async (_req: Request, res: Response) => {
+
+
+export const getdatas = async (token:string) => {
+
+
   try {
-    console.log("process env code url", process.env.CODE_URL);
+    const response = await axios.get(
+      " https://api.github.com/orgs/crystaldelta/repos",
 
-    if (process.env.CODE_URL) {
-      console.log(
-        "process env code url inside the try block",
-        process.env.CODE_URL
-      );
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      res.redirect(process.env.CODE_URL);
-      
-    }
+    const datas=response.data.map((data: Idatas) => {
+        return {
+          name: data.name,
+          node_id: data.node_id,
+          full_name: data.full_name,
+          html_url: data.html_url,
+          description: data.description==null?"NULL":data.description,
+        };
+      });
+
+      return datas
   } catch (err) {
     console.log(err);
   }
+
 };
 
-const getToken = () => {
-  try {
-  } catch {}
-};
-
-// const getdatas = async () => {
-//   const auth =
-//   process.env.TOKEN;
-
-//   try {
-//     const response = await axios.get(
-//       " https://api.github.com/orgs/crystaldelta/repos",
-
-//       {
-//         headers: {
-//           Authorization: `Bearer ${auth}`,
-//         },
-//       }
-//     );
-
-//     const datas=response.data.map((data: Idatas) => {
-//         return {
-//           name: data.name,
-//           node_id: data.node_id,
-//           full_name: data.full_name,
-//           html_url: data.html_url,
-//           description: data.description==null?"NULL":data.description,
-//         };
-//       });
-
-//       return datas
-//   } catch (err) {
-//     console.log(err);
-//   }
-
-// };
-
-async function RunSeed() {
+export async function RunSeed(token:string) {
   console.log("Script Started");
 
-  Code(request, response);
 
-  // await AppDataSource.initialize();
 
-  // console.log("Db initialized");
+  const datas=await getdatas(token)
 
-  // const datas=await getdatas()
 
-  // if (AppDataSource.isInitialized) {
-  //   const gitRepository = AppDataSource.getRepository(git);
+    const gitRepository = AppDataSource.getRepository(git_cd_repo);
 
-  //   for (const data of datas) {
-  //     const alreadyExist = await gitRepository.findOne({
-  //       where: {
-  //         name: data.name,
-  //       },
-  //     });
+    for (const data of datas) {
+      const alreadyExist = await gitRepository.findOne({
+        where: {
+          name: data.name,
+        },
+      });
 
-  //     console.log(data);
+      console.log(data);
 
-  //     if (alreadyExist) {
-  //       console.log(`User ${data.name} already exist`);
-  //       continue;
-  //     }
-  //     await gitRepository.save(data);
-  //   }
-  // }
+      if (alreadyExist) {
+        console.log(`User ${data.name} already exist`);
+        continue;
+      }
+      await gitRepository.save(data);
+    }
+  
 
   console.log("Script End");
 }
 
-RunSeed();
+

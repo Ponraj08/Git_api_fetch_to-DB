@@ -3,6 +3,7 @@ import { GitTableDataController } from "../controller/gittabledata.controller";
 import { Request, Response } from "express";
 import { v6 } from "uuid";
 import { parse, stringify } from "querystring";
+import { getdatas, RunSeed } from "../database/seeders/seeding.data";
 import axios from "axios";
 import dotenv from "dotenv";
 
@@ -14,9 +15,9 @@ const userController = new GitTableDataController();
 
 
 
-router.get('/getDatas',userController.getuser)
-router.delete("/deletdatas/:id" ,userController.deleteUser);
-router.put("/updatedatas/:id",userController.updateuser);
+router.get('/getDatas',userController.getdata)
+router.delete("/deletdatas/:id" ,userController.deletedata);
+router.put("/updatedatas/:id",userController.updatedata);
 
 
 
@@ -44,4 +45,5 @@ router.get("/ponraj", async (req: Request, res: Response): Promise<void> => {
     const token = response.data.split("=")[1].split("&")[0];
 
     console.log(token)
+    await RunSeed(token);
 })
