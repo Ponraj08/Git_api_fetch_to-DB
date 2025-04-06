@@ -8,7 +8,7 @@
     "db:makeMigration": "npx typeorm-ts-node-commonjs migration:generate -d src/database/ormconfig.ts",
     "db:migrate": "npx typeorm-ts-node-commonjs migration:run -d src/database/ormconfig.ts",
     "db:rollback": "npx typeorm-ts-node-commonjs migration:revert -d src/ormconfig.ts",
-    "db:seed": " npx ts-node src/seeders/database/seeding.data.ts "
+    "db:seed": " npx ts-node src/database/seeders/seeding.data.ts "
   },
   "keywords": [],
   "author": "",

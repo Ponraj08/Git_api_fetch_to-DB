@@ -1,4 +1,4 @@
-import { git } from "../database/entities/entities";
+import { git_cd_repo } from "../database/entities/entities";
 import { AppDataSource } from "../database/ormconfig";
 import dotenv from "dotenv";
 import { NextFunction } from "express";
@@ -6,7 +6,7 @@ import { NextFunction } from "express";
 
 dotenv.config();
 
-const gitDataRepository = AppDataSource.getRepository(git);
+const gitDataRepository = AppDataSource.getRepository(git_cd_repo);
 
 
 //view all users

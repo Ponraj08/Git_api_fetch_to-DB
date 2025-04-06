@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column} from "typeorm"
 
 
 @Entity()
-export class git {
+export class git_cd_repo {
 
     @PrimaryGeneratedColumn("increment")
     id:number;
