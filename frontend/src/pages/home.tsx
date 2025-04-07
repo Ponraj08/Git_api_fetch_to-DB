@@ -25,7 +25,7 @@ function Home() {
   const [html_urlEdit,setHtml_urlEdit]=useState("")
   const [descriptionEdit,setdescriptionEdit]=useState("")
   const [idedit,setIdEdit]=useState("")
-  const[erroralart,setErroralart]=useState("")
+  
   
 
   //get method
@@ -33,7 +33,7 @@ function Home() {
   const gettingUsers = async () => {
     try {
 
-      const response = await axios.get(
+      const response:any = await axios.get(
         "http://localhost:5002/gitTableData/getDatas" );
       console.log(response);
       const data: Idatas[] = response.data.map((data: Idatas) => ({
@@ -64,9 +64,8 @@ function Home() {
     
       await axios.delete(`http://localhost:5002/gitTableData/deletdatas/${id}`);
       gettingUsers();
-    } catch (response:any) {
-      setErroralart(response.response.data.error);
-      alert(erroralart)
+    } catch (err) {
+      console.log(err)
     }
   };
 
@@ -89,9 +88,9 @@ function Home() {
           }
       );
       gettingUsers();
-    } catch (response:any) {
-      setErroralart(response.response.data.error)
-      alert(erroralart)
+    } catch (err) {
+      console.log(err)
+
     }
   };
 
