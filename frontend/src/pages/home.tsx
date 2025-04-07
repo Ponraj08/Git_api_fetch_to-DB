@@ -33,10 +33,10 @@ function Home() {
   const gettingUsers = async () => {
     try {
 
-      const response:any = await axios.get(
+      const response = await axios.get(
         "http://localhost:5002/gitTableData/getDatas" );
       console.log(response);
-      const data: Idatas[] = response.data.map((data: Idatas) => ({
+      const data= (response.data as Idatas[]).map((data: Idatas) => ({
         id:data.id,
         name: data.name,
           node_id: data.node_id,
@@ -56,13 +56,16 @@ function Home() {
 
   //delet users
 
-  const deletingUsers = async (id: string, e: any) => {
+  const deletingUsers = async (id: string) => {
     try {
       console.log(id);
-      e.preventDefault();
+   
 
     
       await axios.delete(`http://localhost:5002/gitTableData/deletdatas/${id}`);
+    if(!overalldata.some((data)=>data.id === id)){
+      console.log('bimbilaka pilapi')
+    }
       gettingUsers();
     } catch (err) {
       console.log(err)
@@ -73,10 +76,13 @@ function Home() {
 
  
 
-  const editusers = async (id: string, e: any) => {
+  const editusers = async (id: string, e:  React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
         e.preventDefault();
-
+            if(!overalldata.some((data)=>data.id === id)){
+          console.log('bimbilaka pilapi')
+          return
+        }
 
         await axios.put(`http://localhost:5002/gitTableData/updatedatas/${id}`,
           {
@@ -127,11 +133,11 @@ function Home() {
               <td>{data.description}</td>
               <td>
                 <button className="btn btn-danger m-5 fs-3"
-                  onClick={(e) => {
-                    deletingUsers(data.id, e);
+                  onClick={() => {
+                    deletingUsers(data.id);
                   }}
                 >
-                  delet
+                  delete
                 </button>
               </td>
               <td>

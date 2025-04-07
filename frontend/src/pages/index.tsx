@@ -3,10 +3,7 @@ import axios from "axios";
 
 function Index() {
 
-  const gerstart = async (e:any) => {
-
-    e.preventDefault();
-      console.log("hii")
+  const gerstart = async () => {
     try {
     window.location.assign("http://localhost:5002/gitTableData/github")
 
@@ -20,7 +17,7 @@ function Index() {
       <h1 className="m-5">welcome</h1>
       <button
         
-        onClick={(e) => {gerstart(e)}}
+        onClick={() => {gerstart()}}
         className="btn btn-primary m-5"
       >
         get started

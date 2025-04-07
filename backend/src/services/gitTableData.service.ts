@@ -42,8 +42,7 @@ export const updating = async (
   const currentDatas = await gitDataRepository.findOneBy({ id: ID });
 
   if (!currentDatas) {
-      const error: any = new Error("User not found");
-      error.status = 404;
+      const error = new Error("User not found");
       return next(error); 
   }
 
